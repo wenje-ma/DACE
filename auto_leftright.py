@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 r"""
-auto_leftright.py — 批量把文件中的西文括号 ( ) [ ] \{ \} 以及 | \| 替换成 \left ... \right 版本。
+auto_leftright.py — 批量把文件中的西文括号 ( ) [ ] \{ \}、尖括号 \langle \rangle 以及 | \| 替换成 \left ... \right 版本。
 
 规则:
   - 全文查找西文括号，直接替换（正文里只用中文括号，所以不会误伤正文）
+  - \langle / \rangle（内积、期望值等尖括号）分别替换为 \left\langle / \right\rangle
   - | 和 \|（绝对值 / 范数）只在数学环境（$...$ 与 $$...$$）内处理，
     避免误伤 Markdown 表格的竖线分隔符；同一数学片段内按出现顺序左右配对，
     奇数个裸竖线的片段无法可靠配对，整段跳过并打印警告
@@ -22,15 +23,15 @@ from tkinter import Tk, filedialog
 # markdown 图片/链接（整体保留，避免把图片路径转坏）
 MD_LINK = r"!?\[[^\]]*\]\([^)]*\)"
 # 已包裹的定界符（原样保留）: \left( \right] \bigl\{ \left. 等
-DELIM = r"(?:\(|\)|\[|\]|\\\{|\\\}|\||\.)"
+DELIM = r"(?:\(|\)|\[|\]|\\\{|\\\}|\\langle|\\rangle|\||\.)"
 WRAPPED = (
     MD_LINK
     + r"|\\left\s*" + DELIM
     + r"|\\right\s*" + DELIM
     + r"|\\[bB]ig(?:g|l|r)?\s*" + DELIM
 )
-# 裸定界符（要被替换的）: 前面不是反斜杠的 ( ) [ ]，以及 \{ \}
-BARE = r"(?<!\\)(\(|\)|\[|\])|(\\\{|\\\})"
+# 裸定界符（要被替换的）: 前面不是反斜杠的 ( ) [ ]，以及 \{ \}、\langle \rangle
+BARE = r"(?<!\\)(\(|\)|\[|\])|(\\\{|\\\})|(\\langle|\\rangle)"
 PAT = re.compile(WRAPPED + "|" + BARE)
 
 # --- | 与 \| 的数学环境内左右配对 ---
@@ -106,6 +107,10 @@ def convert(text: str) -> str:
             return "\\left\\{"
         if s == "\\}":
             return "\\right\\}"
+        if s == "\\langle":
+            return "\\left\\langle"
+        if s == "\\rangle":
+            return "\\right\\rangle"
         return s  # 已包裹的，原样保留
 
     return PAT.sub(repl, text)
@@ -130,8 +135,11 @@ def process_file(path: Path):
     n3 = new.count("\\left\\{") - text.count("\\left\\{")
     n4 = new.count("\\left|") - text.count("\\left|")
     n5 = new.count("\\left\\|") - text.count("\\left\\|")
+    n6 = new.count("\\left\\langle") - text.count("\\left\\langle")
+    n7 = new.count("\\right\\rangle") - text.count("\\right\\rangle")
     print(f"已转换: {path}  (+\\left( ×{n1}, +\\left[ ×{n2}, +\\left\\{{ ×{n3}, "
-          f"+\\left| ×{n4}, +\\left\\| ×{n5})")
+          f"+\\left| ×{n4}, +\\left\\| ×{n5}, +\\left\\langle ×{n6}, "
+          f"+\\right\\rangle ×{n7})")
 
 
 def select_and_convert_mds():
