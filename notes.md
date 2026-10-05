@@ -93,7 +93,7 @@ $$
 
 ### 3.3.1 Introduction
 
-> All except the "crossvalidation" estimator of $\boldsymbol\kappa$ require that the training data satisfy $$[\boldsymbol Y^\mathrm{tr}|\boldsymbol\beta,\sigma_Z^2,\boldsymbol\kappa]\sim\mathcal N_{n_s}(\boldsymbol F_\mathrm{tr}\boldsymbol\beta,\sigma_Z^2\boldsymbol R_\mathrm{tr}).$$
+> All except the "crossvalidation" estimator of $\boldsymbol\kappa$ require that the training data satisfy $$\left[\boldsymbol Y^\mathrm{tr}|\boldsymbol\beta,\sigma_Z^2,\boldsymbol\kappa\right]\sim\mathcal N_{n_s}\left(\boldsymbol F_\mathrm{tr}\boldsymbol\beta,\sigma_Z^2\boldsymbol R_\mathrm{tr}\right).$$
 
 **Why should we except the "crossvalidation"?**
 
