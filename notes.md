@@ -59,9 +59,9 @@ While $\theta$ has not the same dimension as $h$, and that is why it call the (g
 
 So-called simple algebra: let $\rho=\exp\left\{-1/\theta^2\right\}$, which means $R\left(\left|h\right|=1\right)$ (that is why the text claimed that "for which $\left|h\right|=1$"), then $\exp\left\{-\left(h/\theta\right)^2\right\}=\rho^{h^2}$. Similarly, let $\rho_*=\exp\left\{-1/\theta^2C\right\}$, which means $R\left(\left|h\right|=1/\sqrt C\right)$, then $\exp\left\{-\left(h/\theta\right)^2\right\}=\rho^{Ch^2}$. Besides, when $C=4$ and $d=1$, $\rho_*=\exp\left\{-\left(1/2\theta\right)^2\right\}=R\left(\left|h\right|=1/2\right)=R\left(\left|0-1/2\right|\right)=\mathrm{Cor}\left[Y\left(0\right),Y\left(1/2\right)\right]$.
 
-## 3.2
+## 3.2 BLUP and Minimum MSPE Predictors
 
-## 3.2.2 Best MSPE Predictors
+### 3.2.2 Best MSPE Predictors
 
 > Let $\widehat Y_0=\mathrm E\left[Y_0\mid\boldsymbol Y_\mathrm{tr}\right]$ and $Y_0^*=Y_0^*\left(\boldsymbol Y_\mathrm{tr}\right)$, then $$\begin{aligned}&\quad\;\mathrm E\left[\left(Y_0^*-\widehat Y_0\right)\left(\widehat Y_0-Y_0\right)\right]\\&=\mathrm E\left[\left(Y_0^*-\widehat Y_0\right)\mathrm E\left[\left(\widehat Y_0-Y_0\right)\mid\boldsymbol Y_\mathrm{tr}\right]\right]\\&=\mathrm E\left[\left(Y_0^*-\widehat Y_0\right)\left(\widehat Y_0-\mathrm E\left[Y_0\mid\boldsymbol Y_\mathrm{tr}\right]\right)\right]\\&=\mathrm E\left[\left(Y_0^*-\widehat Y_0\right)\times0\right]=0.\end{aligned}$$
 
@@ -89,6 +89,14 @@ $$
 \end{aligned}
 $$
 
-## 3.3
+## 3.3 Empirical Best Linear Unbiased Prediction of Univariate Simulator Output
 
-### 6.3.4
+### 3.3.1 Introduction
+
+> All except the "crossvalidation" estimator of $\boldsymbol\kappa$ require that the training data satisfy $$[\boldsymbol Y^\mathrm{tr}|\boldsymbol\beta,\sigma_Z^2,\boldsymbol\kappa]\sim\mathcal N_{n_s}(\boldsymbol F_\mathrm{tr}\boldsymbol\beta,\sigma_Z^2\boldsymbol R_\mathrm{tr}).$$
+
+**Why should we except the "crossvalidation"?**
+
+The essence of MLE, REML is to maximize the log-likelihood of the multivariate normal distribution, while crossvalidation is not. The reason is that the criterion of crossvalidation is **prediction loss criterion**, not probability density or likelihood.
+
+### 6.3.4 Expected Improvement Algorithms for Optimization
